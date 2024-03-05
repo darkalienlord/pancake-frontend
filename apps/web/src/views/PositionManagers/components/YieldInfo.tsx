@@ -22,6 +22,8 @@ interface Props {
   lpTokenDecimals?: number
   aprTimeWindow?: number
   rewardPerSec?: number
+  isBooster?: boolean
+  boosterMultiplier?: number
 }
 
 export const YieldInfo = memo(function YieldInfo({
@@ -39,6 +41,8 @@ export const YieldInfo = memo(function YieldInfo({
   lpTokenDecimals,
   aprTimeWindow,
   rewardPerSec,
+  isBooster,
+  boosterMultiplier,
 }: Props) {
   const { t } = useTranslation()
 
@@ -63,6 +67,8 @@ export const YieldInfo = memo(function YieldInfo({
           precision={precision}
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprTimeWindow}
+          isBooster={isBooster}
+          boosterMultiplier={boosterMultiplier}
         />
       </RowBetween>
       <RowBetween>

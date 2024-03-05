@@ -3,6 +3,7 @@ import {
   CalculateIcon,
   Flex,
   IconButton,
+  RocketIcon,
   RoiCalculatorModal,
   Skeleton,
   Text,
@@ -28,6 +29,8 @@ interface Props {
   precision?: bigint
   lpTokenDecimals?: number
   aprTimeWindow?: number
+  isBooster?: boolean
+  boosterMultiplier?: number
 }
 
 const AprText = styled(Text)`
@@ -47,6 +50,8 @@ export const AprButton = memo(function YieldInfo({
   precision,
   lpTokenDecimals = 0,
   aprTimeWindow = 0,
+  isBooster,
+  boosterMultiplier = 1,
 }: Props) {
   const { t } = useTranslation()
 
@@ -65,12 +70,16 @@ export const AprButton = memo(function YieldInfo({
     () => totalStakedInUsd / (Number(((totalSupplyAmounts ?? 0n) * 10000n) / (precision ?? 1n)) / 10000 ?? 0),
     [totalSupplyAmounts, precision, totalStakedInUsd],
   )
+
+  const cakeAPR = useMemo(() => parseFloat(apr?.cakeYieldApr ?? 0), [apr])
+  const lpAPR = useMemo(() => parseFloat(apr?.lpApr ?? 0), [apr])
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text>
         {t('Combined APR')}:
         <Text ml="3px" style={{ display: 'inline-block' }} bold>
-          {`${apr.combinedApr}%`}
+          {isBooster ? `${(cakeAPR * boosterMultiplier + lpAPR).toFixed(2)}%` : `${apr.combinedApr}%`}
         </Text>
       </Text>
       <ul>
@@ -78,7 +87,7 @@ export const AprButton = memo(function YieldInfo({
           <li>
             {t('CAKE APR')}:
             <Text ml="3px" style={{ display: 'inline-block' }} bold>
-              {`${apr.cakeYieldApr}%`}
+              {isBooster ? `${(cakeAPR * boosterMultiplier).toFixed(2)}%` : `${apr.cakeYieldApr}%`}
             </Text>
           </li>
         )}
@@ -111,7 +120,7 @@ export const AprButton = memo(function YieldInfo({
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={tokenPrice}
       earningTokenPrice={cakePriceBusd.toNumber()}
-      apr={Number(apr.cakeYieldApr) + Number(apr.lpApr)}
+      apr={(isBooster ? boosterMultiplier * cakeAPR : cakeAPR) + lpAPR}
       displayApr={apr.combinedApr}
       linkHref=""
     />,
@@ -124,10 +133,19 @@ export const AprButton = memo(function YieldInfo({
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {apr && !isAprLoading ? (
         <>
-          <AprText color="success" ref={targetRef} bold onClick={onPresentApyModal}>
-            {`${apr.combinedApr}%`}
+          <Text ref={targetRef} display="flex" style={{ gap: 3 }}>
+            <RocketIcon color="success" />
+            {isBooster && <Text color="success">{t('Up to')}</Text>}
+            <AprText display="flex" style={{ gap: 3 }}>
+              {isBooster && (
+                <Text color="success" bold onClick={onPresentApyModal}>
+                  {`${apr.combinedApr}%`}
+                </Text>
+              )}
+              <Text style={{ textDecoration: isBooster ? 'line-through' : undefined }}>{`${apr.combinedApr}%`}</Text>
+            </AprText>
             {tooltipVisible && tooltip}
-          </AprText>
+          </Text>
           <IconButton variant="text" scale="sm" onClick={onPresentApyModal}>
             <CalculateIcon mt="3px" color="textSubtle" ml="3px" width="20px" />
           </IconButton>

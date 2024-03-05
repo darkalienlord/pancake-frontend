@@ -154,7 +154,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
   }, [rewardPerSecond, earningToken])
 
   const withCakeReward: boolean = useMemo(() => earningToken.symbol === 'CAKE', [earningToken])
-
+  const isBooster = Boolean(bCakeWrapper)
   return (
     <StyledCard>
       <CardTitle
@@ -166,6 +166,7 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
         autoCompound={autoCompound}
         isSingleDepositToken={isSingleDepositToken}
         allowDepositToken1={allowDepositToken1}
+        isBooster={isBooster}
       />
       <CardBody>
         <YieldInfo
@@ -183,6 +184,8 @@ export const DuoTokenVaultCard = memo(function DuoTokenVaultCard({
           lpTokenDecimals={lpTokenDecimals}
           aprTimeWindow={aprDataInfo.timeWindow}
           rewardPerSec={tokenPerSecond}
+          isBooster={isBooster}
+          boosterMultiplier={boosterMultiplier}
         />
         <ManagerInfo
           mt="1.5em"
