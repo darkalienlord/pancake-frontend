@@ -35,6 +35,7 @@ export interface FarmTableFarmTokenInfoProps {
   isCommunity?: boolean;
   merklLink?: string;
   hasBothFarmAndMerkl?: boolean;
+  rewardCakePerSecond?: number;
 }
 
 export type ColumnsDefTypes = {
@@ -95,6 +96,12 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
     name: "apr",
     sortable: true,
     label: "APR",
+  },
+  {
+    id: 8,
+    name: "rewardPerDay",
+    sortable: true,
+    label: "",
   },
   {
     id: 5,
