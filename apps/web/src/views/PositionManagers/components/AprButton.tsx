@@ -134,7 +134,7 @@ export const AprButton = memo(function YieldInfo({
       {apr && !isAprLoading ? (
         <>
           <Text ref={targetRef} display="flex" style={{ gap: 3 }}>
-            <RocketIcon color="success" />
+            {isBooster && <RocketIcon color="success" />}
             {isBooster && <Text color="success">{t('Up to')}</Text>}
             <AprText display="flex" style={{ gap: 3 }}>
               {isBooster && (

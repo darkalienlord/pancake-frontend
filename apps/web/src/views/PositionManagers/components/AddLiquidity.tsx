@@ -74,6 +74,8 @@ interface Props {
   aprTimeWindow?: number
   bCakeWrapper?: Address
   minDepositUSD?: number
+  boosterMultiplier?: number
+  isBooster?: boolean
 }
 
 const StyledCurrencyInput = styled(CurrencyInput)`
@@ -116,6 +118,8 @@ export const AddLiquidity = memo(function AddLiquidity({
   aprTimeWindow,
   bCakeWrapper,
   minDepositUSD,
+  isBooster,
+  boosterMultiplier,
 }: Props) {
   const [valueA, setValueA] = useState('')
   const [valueB, setValueB] = useState('')
@@ -417,6 +421,8 @@ export const AddLiquidity = memo(function AddLiquidity({
                   precision={precision}
                   lpTokenDecimals={lpTokenDecimals}
                   aprTimeWindow={aprTimeWindow}
+                  isBooster={isBooster}
+                  boosterMultiplier={boosterMultiplier}
                 />
               </RowBetween>
             </Flex>
