@@ -19,7 +19,7 @@ import { ThirdPartyVaultCard } from './PCSVaultCard'
 const createSearchRegex = (wordText) => {
   const words = wordText.split(/\s+/)
   const escapedWords = words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-  const pattern = escapedWords.map((word) => `(?=.*\\b${word}\\b)`).join('')
+  const pattern = escapedWords.map((word) => `(?=.*${word})`).join('')
   return new RegExp(pattern)
 }
 export const VaultCards = memo(function VaultCards() {
