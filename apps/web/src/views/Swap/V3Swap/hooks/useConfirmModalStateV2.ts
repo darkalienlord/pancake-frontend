@@ -162,7 +162,9 @@ const useConfirmActions = (
           let newAllowanceRaw: bigint = amountToApprove?.quotient ?? 0n
           // check if user really approved the amount trade needs
           try {
-            const { data } = await refetch()
+            const approveRefetchResp = await refetch()
+            console.info('debug approveRefetchResp', approveRefetchResp)
+            const { data } = approveRefetchResp
             newAllowanceRaw = data ?? 0n
           } catch (error) {
             // assume the approval is successful, if we can't check the allowance
