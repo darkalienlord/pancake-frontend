@@ -26,20 +26,11 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
-import { BCakeV3CardView } from '../../YieldBooster/components/bCakeV3/CardView'
-import {
-  useBakeV3farmCanBoost,
-  useIsBoostedPool,
-  useUserBoostedPoolsTokenId,
-  useUserPositionInfo,
-  useVeCakeUserMultiplierBeforeBoosted,
-} from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
-import { useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmWidget.FarmV3Table
@@ -118,32 +109,9 @@ const SingleFarmV3Card: React.FunctionComponent<
   const title = `${lpSymbol} (#${tokenId.toString()})`
   const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId ?? -1] ?? ''}`
 
-  const { updatedUserMultiplierBeforeBoosted } = useVeCakeUserMultiplierBeforeBoosted()
-  const { mutate: updateIsBoostedPool } = useIsBoostedPool(tokenId.toString())
-  const { updateUserPositionInfo } = useUserPositionInfo(tokenId.toString())
-  const { updateBoostedPoolsTokenId } = useUserBoostedPoolsTokenId()
-  const { updateStatus } = useBoostStatus(farm.pid, tokenId.toString())
-
-  const onDone = useCallback(() => {
-    updateIsBoostedPool()
-    updateUserPositionInfo()
-    updateBoostedPoolsTokenId()
-    updatedUserMultiplierBeforeBoosted()
-    updateStatus()
-  }, [
-    updateIsBoostedPool,
-    updateUserPositionInfo,
-    updateBoostedPoolsTokenId,
-    updatedUserMultiplierBeforeBoosted,
-    updateStatus,
-  ])
-
   const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
     tokenId: tokenId.toString(),
-    onDone,
   })
-
-  const { farmCanBoost } = useBakeV3farmCanBoost(farm.pid)
 
   const unstakedModal = useModalV2()
 
@@ -331,24 +299,6 @@ const SingleFarmV3Card: React.FunctionComponent<
                 disabled={!pendingCakeByTokenIds?.[position.tokenId.toString()] ?? true}
                 userDataReady
                 handleHarvest={handleHarvest}
-              />
-            </RowBetween>
-          </>
-        )}
-        {farmCanBoost && (
-          <>
-            <AtomBox
-              width={{
-                xs: '100%',
-                md: 'auto',
-              }}
-              style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
-            />
-            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
-              <BCakeV3CardView
-                tokenId={position.tokenId.toString()}
-                pid={farm.pid}
-                isFarmStaking={positionType === 'staked'}
               />
             </RowBetween>
           </>

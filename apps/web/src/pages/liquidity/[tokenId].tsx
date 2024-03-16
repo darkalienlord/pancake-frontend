@@ -28,7 +28,7 @@ import {
 
 import { ConfirmationModalContent, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
-import { MasterChefV3, NonfungiblePositionManager, Pool, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
+import { MasterChefV3, NonfungiblePositionManager, Position, isPoolTickInRange } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
@@ -43,8 +43,6 @@ import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
 import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { MerklSection } from 'components/Merkl/MerklSection'
-import { MerklTag } from 'components/Merkl/MerklTag'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { RangeTag } from 'components/RangeTag'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
@@ -54,7 +52,6 @@ import dayjs from 'dayjs'
 import { gql } from 'graphql-request'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useMerklInfo } from 'hooks/useMerkl'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { PoolState } from 'hooks/v3/types'
 import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
@@ -232,8 +229,6 @@ export default function PoolPage() {
     }
     return undefined
   }, [liquidity, pool, tickLower, tickUpper])
-
-  const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
 
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
@@ -496,8 +491,6 @@ export default function PoolPage() {
 
   const isOwnNFT = isStakedInMCv3 || ownsNFT
 
-  const { hasMerkl } = useMerklInfo(poolAddress)
-
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return (
       <NotFound LinkComp={Link}>
@@ -507,7 +500,7 @@ export default function PoolPage() {
   }
 
   const farmingTips =
-    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 && !hasMerkl ? (
+    inRange && ownsNFT && hasActiveFarm && !isStakedInMCv3 ? (
       <Message variant="primary" mb="2em">
         <Box>
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
@@ -553,7 +546,6 @@ export default function PoolPage() {
                         <RangeTag ml="8px" removed={removed} outOfRange={!inRange} />
                       </>
                     )}
-                    <MerklTag poolAddress={poolAddress} />
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
@@ -808,24 +800,6 @@ export default function PoolPage() {
                     tickAtLimit={tickAtLimit}
                   />
                 </Box>
-
-                <MerklSection
-                  disabled={!isOwnNFT}
-                  outRange={!inRange}
-                  isStakedInMCv3={Boolean(isStakedInMCv3)}
-                  notEnoughLiquidity={Boolean(
-                    fiatValueOfLiquidity
-                      ? fiatValueOfLiquidity.lessThan(
-                          // NOTE: if Liquidity is lessage 20$, can't participate in Merkl
-                          new Fraction(
-                            BigInt(20) * fiatValueOfLiquidity.decimalScale * fiatValueOfLiquidity.denominator,
-                            fiatValueOfLiquidity?.denominator,
-                          ),
-                        )
-                      : false,
-                  )}
-                  poolAddress={poolAddress}
-                />
               </Flex>
               {positionDetails && currency0 && currency1 && (
                 <PositionHistory

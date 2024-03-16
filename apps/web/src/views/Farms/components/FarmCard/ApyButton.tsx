@@ -3,17 +3,12 @@ import { RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pa
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
-import { MouseEvent, useContext, useState } from 'react'
+import { MouseEvent, useState } from 'react'
 
-import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
-import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useFarmUser } from 'state/farms/hooks'
 
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useAccount } from 'wagmi'
-import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
-import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
-import { useGetBoostedMultiplier } from '../YieldBooster/hooks/useGetBoostedAPR'
-import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
 
 export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
@@ -52,7 +47,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   strikethrough,
   useTooltipText,
   hideButton,
-  boosted,
   stableSwapAddress,
   stableLpFee,
   farmCakePerSecond,
@@ -60,24 +54,14 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
+  const [bCakeMultiplier] = useState<number | null>(() => null)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
-  const lpTokenStakedAmount = useFarmFromPid(pid)?.lpTokenStakedAmount || BIG_ZERO
-  const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
 
   const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
     ? stakedBalance.plus(tokenBalance)
     : proxy
     ? proxy.stakedBalance.plus(proxy.tokenBalance)
     : BIG_ZERO
-  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTokenStakedAmount)
-  const boostMultiplierFromSC = useBoostMultiplier({ pid, boosterState, proxyAddress })
-  const boostMultiplier = userBalanceInFarm.eq(0)
-    ? boostMultiplierFromSC
-    : userBalanceInFarm.gt(0) && boosterState === YieldBoosterState.ACTIVE
-    ? boostMultiplierFromSC
-    : boosterMultiplierFromFE
-  const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
       account={account}
@@ -94,16 +78,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       linkHref={addLiquidityUrl}
       lpRewardsApr={lpRewardsApr}
       isFarm
-      bCakeCalculatorSlot={(calculatorBalance) =>
-        boosted ? (
-          <BCakeCalculator
-            targetInputBalance={calculatorBalance}
-            earningTokenPrice={cakePrice?.toNumber() ?? 0}
-            lpTokenStakedAmount={lpTokenStakedAmount}
-            setBCakeMultiplier={setBCakeMultiplier}
-          />
-        ) : null
-      }
       stableSwapAddress={stableSwapAddress}
       stableLpFee={stableLpFee}
       farmCakePerSecond={farmCakePerSecond}
@@ -124,14 +98,14 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       <Text>
         {t('Combined APR')}:{' '}
         <Text style={{ display: 'inline-block' }} color={strikethrough ? 'secondary' : 'text'} bold>
-          {strikethrough ? `${(apr * boostMultiplier + lpRewardsApr).toFixed(2)}%` : `${displayApr}%`}
+          {strikethrough ? `${(apr + lpRewardsApr).toFixed(2)}%` : `${displayApr}%`}
         </Text>
       </Text>
       <ul>
         <li>
           {t('Farm APR')}:{' '}
           <Text style={{ display: 'inline-block' }} color={strikethrough ? 'secondary' : 'normal'} bold>
-            {strikethrough ? `${(apr * boostMultiplier).toFixed(2)}%` : `${apr.toFixed(2)}%`}
+            {strikethrough ? `${apr.toFixed(2)}%` : `${apr.toFixed(2)}%`}
           </Text>
         </li>
         <li>
@@ -141,14 +115,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
           </Text>
         </li>
       </ul>
-      {strikethrough && (
-        <Text>
-          {t('Available Boosted')}:{' '}
-          <Text color="secondary" style={{ display: 'inline-block' }}>
-            {t('Up to %boostMultiplier%x', { boostMultiplier: boostMultiplierDisplay })}
-          </Text>
-        </Text>
-      )}
       {strikethrough && <Text color="secondary">{t('Boost only applies to base APR (CAKE yield)')}</Text>}
     </>,
     {

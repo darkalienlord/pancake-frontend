@@ -1,6 +1,5 @@
 import { styled } from 'styled-components'
 
-import { checkIsBoostedPool } from '@pancakeswap/pools'
 import { Flex, FlexLayout, Heading, Image, Link, Loading, PageHeader, Text, ViewMode } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 import { useAccount } from 'wagmi'
@@ -98,7 +97,6 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                       <Pool.PoolCard<Token>
                         key={pool.sousId}
                         pool={pool}
-                        isBoostedPool={Boolean(chainId && checkIsBoostedPool(pool.contractAddress, chainId))}
                         isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                         cardContent={
                           account ? (

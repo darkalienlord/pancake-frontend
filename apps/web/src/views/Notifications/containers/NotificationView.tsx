@@ -8,12 +8,10 @@ import {
   CogIcon,
   Flex,
   IconButton,
-  InfoFilledIcon,
   OptionProps,
   Select,
   Text,
   Toggle,
-  TooltipText,
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
@@ -177,11 +175,7 @@ const NotificationView = ({
     dispatch(setImportantAlerts({ subscriptionId: subscription?.topic, importantOnly: !importantAlertsOnly }))
   }, [importantAlertsOnly, subscription?.topic, dispatch])
 
-  const {
-    tooltip: importantAlertsTooltip,
-    tooltipVisible: importantAlertsTooltipVisible,
-    targetRef: buyCryptoTargetRef,
-  } = useTooltip(
+  const { tooltip: importantAlertsTooltip, tooltipVisible: importantAlertsTooltipVisible } = useTooltip(
     <Box maxWidth="160px">
       <Text as="p">{t('Show only the notifications that belong to your wallet or LP positions')}</Text>
     </Box>,
@@ -227,9 +221,6 @@ const NotificationView = ({
           onChange={toggleImportantOnlyAlerts}
         />
         <Text paddingX="8px">{t('Important only')}</Text>
-        <TooltipText ref={buyCryptoTargetRef} display="flex" style={{ justifyContent: 'center' }}>
-          <InfoFilledIcon pt="2px" fill="#000" color="textSubtle" width="16px" />
-        </TooltipText>
 
         {importantAlertsTooltipVisible && !isMobile && importantAlertsTooltip}
       </Flex>

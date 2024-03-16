@@ -6,6 +6,8 @@ import { arbSepoliaTokens } from './constants/arbSepolia'
 import { baseTokens } from './constants/base'
 import { baseSepoliaTokens } from './constants/baseSepolia'
 import { baseTestnetTokens } from './constants/baseTestnet'
+import { blastTokens } from './constants/blast'
+import { blastSepoliaTokens } from './constants/blastSepolia'
 import { bscTokens } from './constants/bsc'
 import { bscTestnetTokens } from './constants/bscTestnet'
 import { ethereumTokens } from './constants/eth'
@@ -42,4 +44,6 @@ export const allTokens = {
   [ChainId.SEPOLIA]: sepoliaTokens,
   [ChainId.ARBITRUM_SEPOLIA]: arbSepoliaTokens,
   [ChainId.BASE_SEPOLIA]: baseSepoliaTokens,
+  [ChainId.BLAST]: blastTokens,
+  [ChainId.BLAST_SEPOLIA]: blastSepoliaTokens,
 }

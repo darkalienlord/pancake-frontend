@@ -5,7 +5,6 @@ import { styled } from 'styled-components'
 import MultipleBanner from './components/Banners/MultipleBanner'
 import CakeDataRow from './components/CakeDataRow'
 import CakeSection from './components/CakeSection'
-import CommunitySection from './components/CommunitySection'
 import { RightTopBox } from './components/CommunitySection/ImagesOnBg'
 import EcoSystemSection from './components/EcoSystemSection'
 import Footer from './components/Footer'
@@ -147,7 +146,6 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         hasCurvedDivider={false}
       >
         <RightTopBox />
-        <CommunitySection />
       </PageSection>
       <PageSection
         innerProps={{

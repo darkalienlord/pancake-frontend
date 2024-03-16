@@ -7,15 +7,12 @@ import {
   CopyAddress,
   Flex,
   FlexGap,
-  InfoFilledIcon,
   InjectedModalProps,
   LinkExternal,
   Message,
   ScanLink,
   Skeleton,
   Text,
-  TooltipText,
-  useTooltip,
 } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { FetchStatus } from 'config/constants/types'
@@ -28,8 +25,6 @@ import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBa
 import InternalLink from 'components/Links'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { useDomainNameForAddress } from 'hooks/useDomain'
-import { useState } from 'react'
-import { isMobile } from 'react-device-detect'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { Address, useBalance } from 'wagmi'
 
@@ -57,39 +52,12 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const { balance: wNativeBalance, fetchStatus: wNativeFetchStatus } = useTokenBalance(wNativeToken?.address as Address)
   const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useBSCCakeBalance()
-  const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { logout } = useAuth()
 
   const handleLogout = () => {
     onDismiss?.()
     logout()
   }
-  const {
-    tooltip: buyCryptoTooltip,
-    tooltipVisible: buyCryptoTooltipVisible,
-    targetRef: buyCryptoTargetRef,
-  } = useTooltip(
-    <>
-      <Box maxWidth="140px">
-        <FlexGap gap="8px" flexDirection="column" justifyContent="space-between">
-          <Text as="p">
-            {t('%currency% Balance Low. You need %currency% for transaction fees.', {
-              currency: native?.symbol,
-            })}
-          </Text>
-          <InternalLink href="/buy-crypto" onClick={() => onDismiss?.()}>
-            <Button height="30px">{t('Buy %currency%', { currency: native?.symbol })}</Button>
-          </InternalLink>
-        </FlexGap>
-      </Box>
-    </>,
-    {
-      isInPortal: false,
-      placement: isMobile ? 'top' : 'bottom',
-      trigger: isMobile ? 'focus' : 'hover',
-      ...(isMobile && { manualVisible: mobileTooltipShow }),
-    },
-  )
 
   const showBscEntryPoint = Number(bnbBalance?.data?.value) === 0 && SUPPORT_BUY_CRYPTO.includes(chainId as ChainId)
   const showNativeEntryPoint =
@@ -149,17 +117,6 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
                 >
                   {formatBigInt(nativeBalance?.data?.value ?? 0n, 6)}
                 </Text>
-                {showNativeEntryPoint ? (
-                  <TooltipText
-                    ref={buyCryptoTargetRef}
-                    onClick={() => setMobileTooltipShow(false)}
-                    display="flex"
-                    style={{ justifyContent: 'center' }}
-                  >
-                    <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
-                  </TooltipText>
-                ) : null}
-                {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
               </Flex>
             )}
           </Flex>
@@ -205,17 +162,6 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
                 >
                   {formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
                 </Text>
-                {showBscEntryPoint ? (
-                  <TooltipText
-                    ref={buyCryptoTargetRef}
-                    onClick={() => setMobileTooltipShow(false)}
-                    display="flex"
-                    style={{ justifyContent: 'center' }}
-                  >
-                    <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
-                  </TooltipText>
-                ) : null}
-                {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
               </Flex>
             )}
           </Flex>

@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { ReactElement, useMemo } from "react";
-import { Flex, CardBody, CardRibbon, Skeleton } from "@pancakeswap/uikit";
+import { CardBody, CardRibbon, Flex, Skeleton } from "@pancakeswap/uikit";
+import { ReactElement } from "react";
 import { PoolCardHeader, PoolCardHeaderTitle } from "./PoolCardHeader";
 import { StyledCard } from "./StyledCard";
 import { DeserializedPool } from "./types";
@@ -12,24 +12,13 @@ interface PoolCardPropsType<T> {
   cardFooter: ReactElement;
   tokenPairImage: ReactElement;
   isStaked: boolean;
-  isBoostedPool?: boolean;
 }
 
-export function PoolCard<T>({
-  pool,
-  cardContent,
-  aprRow,
-  isStaked,
-  cardFooter,
-  tokenPairImage,
-  isBoostedPool,
-}: PoolCardPropsType<T>) {
+export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, tokenPairImage }: PoolCardPropsType<T>) {
   const { sousId, stakingToken, earningToken, isFinished, totalStaked } = pool;
   const { t } = useTranslation();
 
   const isCakePool = earningToken?.symbol === "CAKE" && stakingToken?.symbol === "CAKE";
-
-  const showBoostedTag = useMemo(() => !isFinished && isBoostedPool, [isFinished, isBoostedPool]);
 
   return (
     <StyledCard
@@ -45,7 +34,6 @@ export function PoolCard<T>({
               subTitle={
                 isCakePool ? t("Earn CAKE, stake CAKE") : t("Stake %symbol%", { symbol: stakingToken?.symbol || "" })
               }
-              showBoostedTag={showBoostedTag}
             />
             {tokenPairImage}
           </>

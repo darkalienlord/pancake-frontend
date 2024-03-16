@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { ButtonMenu, ButtonMenuItem, Checkbox, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useRouter } from 'next/router'
 import { memo, useEffect, useMemo, useState } from 'react'
@@ -10,7 +10,6 @@ import { styled } from 'styled-components'
 import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import { InfoDataSource as DataSourceType } from 'state/info/types'
 
-import useTradingRewardTokenList from '../../hooks/useTradingRewardTokenList'
 import TokenTable from './SwapTokenTable'
 import { useTokenHighLightList } from './useList'
 
@@ -67,7 +66,6 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const [confirmed, setConfirmed] = useState(false)
-  const { tokenPairs } = useTradingRewardTokenList()
 
   useEffect(() => {
     if (query.showTradingReward) {
@@ -83,18 +81,11 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
             t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId!],
         )
         .map((i) => {
-          const tokenAddress = i?.address?.toLowerCase()
-          const pairs = tokenPairs?.filter(
-            (pair) =>
-              pair?.token?.address?.toLowerCase() === tokenAddress ||
-              pair?.quoteToken?.address?.toLowerCase() === tokenAddress,
-          )
           return {
             ...i,
-            pairs,
           }
         }),
-    [v2Tokens, chainId, tokenPairs],
+    [v2Tokens, chainId],
   )
 
   const formattedV3Tokens = useMemo(
@@ -105,26 +96,16 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
             t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.tvlUSD >= LIQUIDITY_FILTER[chainId!],
         )
         .map((i) => {
-          const tokenAddress = i?.address?.toLowerCase()
-          const pairs = tokenPairs?.filter(
-            (pair) =>
-              pair?.token?.address?.toLowerCase() === tokenAddress ||
-              pair?.quoteToken?.address?.toLowerCase() === tokenAddress,
-          )
           return {
             ...i,
-            pairs,
           }
         }),
-    [v3Tokens, chainId, tokenPairs],
+    [v3Tokens, chainId],
   )
 
   const filterFormattedV3Tokens = useMemo(() => {
-    if (confirmed) {
-      return formattedV3Tokens.filter((token) => token.pairs.length > 0)
-    }
     return formattedV3Tokens
-  }, [confirmed, formattedV3Tokens])
+  }, [formattedV3Tokens])
 
   const { t } = useTranslation()
   return (
@@ -144,26 +125,6 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
             <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
           </ButtonMenu>
         </MenuWrapper>
-        {dataSource === DataSourceType.V3 && tokenPairs.length > 0 && (
-          <Flex
-            mb="24px"
-            alignItems="center"
-            ml={['20px', '20px', '20px', '20px', '-4px']}
-            onClick={() => setConfirmed(!confirmed)}
-            style={{ cursor: 'pointer' }}
-          >
-            <Checkbox
-              scale="sm"
-              name="confirmed"
-              type="checkbox"
-              checked={confirmed}
-              onChange={() => setConfirmed(!confirmed)}
-            />
-            <Text ml="8px" style={{ userSelect: 'none' }}>
-              {t('Show pairs with trading rewards')}
-            </Text>
-          </Flex>
-        )}
         {index === 0 ? (
           <TokenTable
             dataSource={dataSource}

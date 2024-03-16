@@ -4,7 +4,6 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useERC20 } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 
@@ -17,7 +16,6 @@ import { useCallback } from 'react'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import { SendTransactionResult } from 'wagmi/actions'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
 const { FarmTableHarvestAction } = FarmWidget.FarmTable
 
@@ -26,15 +24,6 @@ interface HarvestActionProps extends FarmWithStakedValue {
   onReward?: () => Promise<SendTransactionResult>
   proxyCakeBalance?: number
   onDone?: () => void
-}
-
-export const ProxyHarvestActionContainer = ({ children, ...props }) => {
-  const { lpAddress } = props
-  const lpContract = useERC20(lpAddress)
-
-  const { onReward, onDone, proxyCakeBalance } = useProxyStakedActions(props.pid, lpContract)
-
-  return children({ ...props, onReward, proxyCakeBalance, onDone })
 }
 
 export const HarvestActionContainer = ({ children, ...props }) => {

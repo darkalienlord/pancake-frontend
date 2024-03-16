@@ -1,9 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { ArrowForwardIcon, Column, QuestionHelper, Text } from '@pancakeswap/uikit'
-import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { CurrencyLogo } from '@pancakeswap/widgets-internal'
 import { LightGreyCard } from 'components/Card'
+import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
@@ -12,8 +13,6 @@ import { FixedSizeList } from 'react-window'
 import { styled } from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
-import { fiatCurrencyMap } from 'views/BuyCrypto/constants'
-import { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -162,19 +161,14 @@ export default function CurrencyList({
   const Row = useCallback(
     ({ data, index, style }) => {
       const currency: any = data[index]
-      const isFiat = Boolean(Object.keys(fiatCurrencyMap).includes(currency?.symbol))
 
       // the alternative to making a fiat currency token list
       // with class methods
       let isSelected = false
       let otherSelected = false
-      if (!isFiat && mode !== 'onramp-input') {
-        isSelected = Boolean(selectedCurrency && currency && selectedCurrency.equals(currency))
-        otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
-      } else {
-        isSelected = Boolean(selectedCurrency?.symbol && currency && selectedCurrency?.symbol === currency?.symbol)
-        otherSelected = Boolean(otherCurrency?.symbol && currency && otherCurrency?.symbol === currency?.symbol)
-      }
+      isSelected = Boolean(selectedCurrency?.symbol && currency && selectedCurrency?.symbol === currency?.symbol)
+      otherSelected = Boolean(otherCurrency?.symbol && currency && otherCurrency?.symbol === currency?.symbol)
+
       const handleSelect = () => onCurrencySelect(currency)
 
       const token = wrappedCurrency(currency, chainId)

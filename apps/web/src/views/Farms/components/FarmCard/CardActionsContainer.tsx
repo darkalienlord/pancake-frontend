@@ -2,11 +2,9 @@ import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useContext } from 'react'
 import { styled } from 'styled-components'
-import { HarvestActionContainer, ProxyHarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
-import { ProxyStakedContainer, StakedContainer } from '../FarmTable/Actions/StakedAction'
-import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
+import { HarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
+import { StakedContainer } from '../FarmTable/Actions/StakedAction'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 
@@ -30,9 +28,8 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { pid, token, quoteToken, vaultPid, lpSymbol, lpAddress } = farm
+  const { pid, token, quoteToken, vaultPid, lpSymbol } = farm
   const { earnings } = farm.userData || {}
-  const { shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
   const isReady = farm.multiplier !== undefined
 
   return (
@@ -45,30 +42,16 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {t('Earned')}
         </Text>
       </Flex>
-      {shouldUseProxyFarm ? (
-        <ProxyHarvestActionContainer
-          lpAddress={lpAddress}
-          earnings={earnings}
-          pid={pid}
-          vaultPid={vaultPid}
-          token={token}
-          quoteToken={quoteToken}
-          lpSymbol={lpSymbol}
-        >
-          {(props) => <HarvestAction {...props} />}
-        </ProxyHarvestActionContainer>
-      ) : (
-        <HarvestActionContainer
-          earnings={earnings}
-          pid={pid}
-          vaultPid={vaultPid}
-          token={token}
-          quoteToken={quoteToken}
-          lpSymbol={lpSymbol}
-        >
-          {(props) => <HarvestAction {...props} />}
-        </HarvestActionContainer>
-      )}
+      <HarvestActionContainer
+        earnings={earnings}
+        pid={pid}
+        vaultPid={vaultPid}
+        token={token}
+        quoteToken={quoteToken}
+        lpSymbol={lpSymbol}
+      >
+        {(props) => <HarvestAction {...props} />}
+      </HarvestActionContainer>
       {isReady ? (
         <Flex>
           <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
@@ -83,10 +66,6 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       )}
       {!account ? (
         <ConnectWalletButton mt="8px" width="100%" />
-      ) : shouldUseProxyFarm ? (
-        <ProxyStakedContainer {...farm} lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} displayApr={displayApr}>
-          {(props) => <StakeAction {...props} />}
-        </ProxyStakedContainer>
       ) : (
         <StakedContainer {...farm} lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} displayApr={displayApr}>
           {(props) => <StakeAction {...props} />}

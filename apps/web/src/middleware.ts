@@ -8,22 +8,5 @@ import { stackMiddlewares } from 'middlewares/stack-middleware'
 export const middleware = stackMiddlewares([withClientId, withGeoBlock, withUserIp, withABTesting])
 
 export const config = {
-  matcher: [
-    '/',
-    '/swap',
-    '/liquidity',
-    '/pools',
-    '/cake-staking',
-    '/gauges-voting',
-    '/farms',
-    '/add',
-    '/ifo',
-    '/remove',
-    '/prediction',
-    '/find',
-    '/limit-orders',
-    '/lottery',
-    '/nfts',
-    '/info/:path*',
-  ],
+  matcher: ['/', '/swap', '/liquidity', '/farms', '/add', '/remove', '/find', '/info/:path*'],
 }

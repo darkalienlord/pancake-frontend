@@ -54,7 +54,6 @@ test('exports', () => {
       "getSousChefV2Contract",
       "getSmartChefChefV2Contract",
       "getPoolContractBySousId",
-      "checkIsBoostedPool",
       "getBoostedPoolApr",
       "cakeFlexibleSideVaultV2ABI",
       "cakeVaultV2ABI",

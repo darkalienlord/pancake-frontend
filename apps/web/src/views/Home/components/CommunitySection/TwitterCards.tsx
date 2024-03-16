@@ -13,7 +13,6 @@ import {
 import useTheme from 'hooks/useTheme'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { useLatestArticle } from '../../hooks/useAllArticle'
 
 export const BlogImage = styled.div`
   width: 100%;
@@ -152,35 +151,6 @@ export const TwitterCards: React.FC = () => {
       <Link external href={tweets[0].link} marginTop="5px">
         {t('Web link')} <OpenNewIcon ml="3px" color="primary" />
       </Link>
-    </Wrapper>
-  )
-}
-
-export const BlogCard: React.FC = () => {
-  const { t } = useTranslation()
-  const { articlesData } = useLatestArticle()
-  const { theme } = useTheme()
-  return (
-    <Wrapper
-      onClick={() => {
-        window.open(
-          `https://blog.pancakeswap.finance/articles/${articlesData?.data?.[0]?.slug ?? ''}`,
-          '_blank',
-          'noopener noreferrer',
-        )
-      }}
-      style={{ cursor: 'pointer' }}
-    >
-      <Text bold mb="24px">
-        {t('Latest Blog Post')}
-      </Text>
-      <BlogImage style={{ backgroundImage: `url(${articlesData?.data?.[0]?.imgUrl ?? ''})` }} />
-      <Text mt="8px" fontSize={14} color={theme.colors.textSubtle} textAlign="left">
-        {articlesData?.data?.[0]?.createAt ?? ''}
-      </Text>
-      <Text mt="10px" fontSize={14} bold>
-        {articlesData?.data?.[0]?.title ?? ''}
-      </Text>
     </Wrapper>
   )
 }

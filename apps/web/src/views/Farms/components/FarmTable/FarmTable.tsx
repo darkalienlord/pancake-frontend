@@ -12,7 +12,6 @@ import { getMerklLink } from 'utils/getMerklLink'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
-import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
 
@@ -275,11 +274,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
               {sortedRows.map((row, index) => {
                 const isLastFarm = index === sortedRows.length - 1
 
-                return row.type === 'v2' && row?.details?.boosted ? (
-                  <ProxyFarmContainer key={`table-row-${row.farm.pid}-${row.type}`} farm={row.details}>
-                    <Row {...row} userDataReady={userDataReady} isLastFarm={isLastFarm} />
-                  </ProxyFarmContainer>
-                ) : (
+                return (
                   <Row
                     {...row}
                     userDataReady={userDataReady}

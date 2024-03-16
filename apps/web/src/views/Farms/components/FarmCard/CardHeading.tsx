@@ -1,13 +1,11 @@
 import { Token } from '@pancakeswap/sdk'
-import { AutoRow, Box, FarmMultiplierInfo, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
+import { AutoRow, FarmMultiplierInfo, Flex, Heading, Skeleton, Tag, useTooltip } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { TokenPairImage } from 'components/TokenImage'
 import { styled } from 'styled-components'
-import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmWidget.Tags
-const { MerklNotice } = FarmWidget
 
 type ExpandableSectionProps = {
   lpLabel?: string
@@ -22,9 +20,6 @@ type ExpandableSectionProps = {
   pid?: number
   farmCakePerSecond?: string
   totalMultipliers?: string
-  merklLink?: string
-  hasBothFarmAndMerkl?: boolean
-  isBoosted?: boolean
 }
 
 const Wrapper = styled(Flex)`
@@ -48,9 +43,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   feeAmount,
   farmCakePerSecond,
   totalMultipliers,
-  merklLink,
-  hasBothFarmAndMerkl,
-  isBoosted,
 }) => {
   const isReady = multiplier !== undefined
   const multiplierTooltipContent = FarmMultiplierInfo({
@@ -73,16 +65,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         {isReady ? (
           <Heading mb="4px" display="inline-flex">
             {lpLabel?.split(' ')?.[0] ?? ''}
-            {merklLink ? (
-              <Box mr="-4px" ml="4px">
-                <MerklNotice.WithTooltip
-                  placement="top"
-                  tooltipOffset={[0, 10]}
-                  merklLink={merklLink}
-                  hasFarm={hasBothFarmAndMerkl}
-                />
-              </Box>
-            ) : null}
           </Heading>
         ) : (
           <Skeleton mb="4px" width={60} height={18} />
@@ -99,7 +81,6 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-          {isReady && isBoosted && <BoostedTag mr="-4px" />}
         </AutoRow>
       </Flex>
     </Wrapper>

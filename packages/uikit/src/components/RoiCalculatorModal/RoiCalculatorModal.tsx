@@ -77,7 +77,6 @@ export interface RoiCalculatorModalProps {
   rewardCakePerSecond?: boolean;
   onBack?: () => void;
   onDismiss?: () => void;
-  bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
   isLocked?: boolean;
   stableSwapAddress?: string;
   stableLpFee?: number;
@@ -111,7 +110,6 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   rewardCakePerSecond,
   onBack,
   onDismiss,
-  bCakeCalculatorSlot,
   isLocked = false,
   stableSwapAddress,
   stableLpFee,
@@ -270,7 +268,6 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               </FullWidthButtonMenu>
             </>
           )}
-          {bCakeCalculatorSlot && bCakeCalculatorSlot(principalAsToken)}
           {autoCompoundFrequency === 0 && (
             <>
               <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">

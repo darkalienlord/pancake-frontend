@@ -139,10 +139,6 @@ export const getV3AirdropAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.v3Airdrop, chainId)
 }
 
-export const getAffiliateProgramAddress = (chainId?: number) => {
-  return getAddressFromMap(addresses.affiliateProgram, chainId)
-}
-
 export const getTradingRewardTopTradesAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.tradingRewardTopTrades, chainId)
 }
@@ -153,10 +149,6 @@ export const getVCakeAddress = (chainId?: number) => {
 
 export const getRevenueSharingPoolAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.revenueSharingPool, chainId)
-}
-
-export const getAnniversaryAchievementAddress = (chainId?: number) => {
-  return getAddressFromMap(addresses.anniversaryAchievement, chainId)
 }
 
 export const getFixedStakingAddress = (chainId?: number) => {

@@ -1,10 +1,7 @@
+import { CardHeader, Flex, Heading, Text } from "@pancakeswap/uikit";
+import getThemeValue from "@pancakeswap/uikit/util/getThemeValue";
 import { ReactNode } from "react";
 import { styled } from "styled-components";
-import getThemeValue from "@pancakeswap/uikit/util/getThemeValue";
-import { CardHeader, Flex, Heading, Text } from "@pancakeswap/uikit";
-import Tags from "../farm/components/Tags";
-
-const { AlpBoostedTag } = Tags;
 
 const Wrapper = styled(CardHeader)<{ isFinished?: boolean; background: string }>`
   background: ${({ isFinished, background, theme }) =>
@@ -34,9 +31,8 @@ export const PoolCardHeaderTitle: React.FC<
     isFinished?: boolean;
     title: ReactNode;
     subTitle: ReactNode;
-    showBoostedTag?: boolean;
   }>
-> = ({ isFinished, title, subTitle, showBoostedTag }) => {
+> = ({ isFinished, title, subTitle }) => {
   return (
     <Flex flexDirection="column">
       <Heading color={isFinished ? "textDisabled" : "body"} scale="lg">
@@ -46,7 +42,6 @@ export const PoolCardHeaderTitle: React.FC<
         <Text style={{ alignSelf: "flex-end" }} fontSize="14px" color={isFinished ? "textDisabled" : "textSubtle"}>
           {subTitle}
         </Text>
-        {showBoostedTag && <AlpBoostedTag scale="sm" m="4px 0 0 4px" />}
       </Flex>
     </Flex>
   );

@@ -1,11 +1,10 @@
-import { Campaign, TranslatableText } from 'config/constants/types'
-import { getIfoConfig } from '@pancakeswap/ifos'
-import { campaignMap } from 'config/constants/campaigns'
-import { TranslateFunction } from '@pancakeswap/localization'
-import { Achievement } from 'state/types'
 import { ChainId } from '@pancakeswap/chains'
-import { getPointCenterIfoAddress } from 'utils/addressHelpers'
+import { TranslateFunction } from '@pancakeswap/localization'
 import { pointCenterIfoABI } from 'config/abi/pointCenterIfo'
+import { campaignMap } from 'config/constants/campaigns'
+import { Campaign, TranslatableText } from 'config/constants/types'
+import { Achievement } from 'state/types'
+import { getPointCenterIfoAddress } from 'utils/addressHelpers'
 import { Address, ContractFunctionResult } from 'viem'
 import { publicClient } from './wagmi'
 
@@ -47,9 +46,6 @@ export const getAchievementDescription = (campaign: Campaign | undefined, t: Tra
  * Checks if a wallet is eligible to claim points from valid IFO's
  */
 export const getClaimableIfoData = async (account: string, t: TranslateFunction): Promise<Achievement[]> => {
-  const ifosList = (await getIfoConfig(ChainId.BSC)) || []
-  const ifoCampaigns = ifosList.filter((ifoItem) => ifoItem.campaignId !== undefined)
-
   const bscClient = publicClient({ chainId: ChainId.BSC })
 
   // Returns the claim status of every IFO with a campaign ID

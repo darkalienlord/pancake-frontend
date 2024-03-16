@@ -107,6 +107,24 @@ export const BUSD_GOERLI = new ERC20Token(
   'https://www.paxos.com/busd/',
 )
 
+export const USDB = new ERC20Token(
+  ChainId.BLAST,
+  '0x4300000000000000000000000000000000000003',
+  18,
+  'USDB',
+  'USD Blast Coin',
+  'https://blast.io/',
+)
+
+export const USDB_SEPOLIA = new ERC20Token(
+  ChainId.BLAST_SEPOLIA,
+  '0x4200000000000000000000000000000000000022',
+  18,
+  'USDB',
+  'USD Blast Coin',
+  'https://blast.io/',
+)
+
 export const BUSD = {
   [ChainId.ETHEREUM]: BUSD_ETH,
   [ChainId.GOERLI]: BUSD_GOERLI,
@@ -243,6 +261,8 @@ export const USDC = {
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
   [ChainId.GOERLI]: USDC_GOERLI,
+  [ChainId.BLAST]: USDB,
+  [ChainId.BLAST_SEPOLIA]: USDB_SEPOLIA,
   [ChainId.ZKSYNC]: new ERC20Token(ChainId.ZKSYNC, '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4', 6, 'USDC', 'USD Coin'),
   [ChainId.ZKSYNC_TESTNET]: new ERC20Token(
     ChainId.ZKSYNC_TESTNET,
@@ -328,6 +348,8 @@ export const USDC = {
 export const USDT = {
   [ChainId.BSC]: USDT_BSC,
   [ChainId.ETHEREUM]: USDT_ETH,
+  [ChainId.BLAST]: USDB,
+  [ChainId.BLAST_SEPOLIA]: USDB_SEPOLIA,
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
     ChainId.ARBITRUM_ONE,
     '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
@@ -402,4 +424,6 @@ export const STABLE_COIN = {
   [ChainId.SEPOLIA]: USDC[ChainId.SEPOLIA],
   [ChainId.ARBITRUM_SEPOLIA]: USDC[ChainId.ARBITRUM_SEPOLIA],
   [ChainId.BASE_SEPOLIA]: USDC[ChainId.BASE_SEPOLIA],
+  [ChainId.BLAST]: USDB,
+  [ChainId.BLAST_SEPOLIA]: USDB_SEPOLIA,
 } satisfies Record<ChainId, ERC20Token>

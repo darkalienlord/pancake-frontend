@@ -15,7 +15,7 @@ import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { FC, useContext, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 import { ChainLinkSupportChains, multiChainPaths } from 'state/info/constant'
 import { css, keyframes, styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -27,10 +27,9 @@ import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import { useAccount } from 'wagmi'
 import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
-import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 import Apr, { AprProps } from '../Apr'
-import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
-import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
+import { HarvestAction, HarvestActionContainer } from './HarvestAction'
+import StakedAction, { StakedContainer } from './StakedAction'
 
 const { Multiplier, Liquidity, StakedLiquidity } = FarmWidget.FarmTable
 const { NoPosition } = FarmWidget.FarmV3Table
@@ -320,7 +319,6 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
   alignLinksToRight = true,
 }) => {
   const { chainId } = useActiveChainId()
-  const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
   const farm = details
 
@@ -419,24 +417,13 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
           </>
         }
       >
-        {shouldUseProxyFarm ? (
-          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </ProxyHarvestActionContainer>
-        ) : (
-          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </HarvestActionContainer>
-        )}
-        {shouldUseProxyFarm ? (
-          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </ProxyStakedContainer>
-        ) : (
-          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </StakedContainer>
-        )}
+        (
+        <HarvestActionContainer {...farm} userDataReady={userDataReady}>
+          {(props) => <HarvestAction {...props} />}
+        </HarvestActionContainer>
+        <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+          {(props) => <StakedAction {...props} />}
+        </StakedContainer>
       </ActionPanelContainer>
     </>
   )

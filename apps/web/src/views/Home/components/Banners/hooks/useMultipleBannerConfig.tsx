@@ -1,20 +1,13 @@
-import { useCountdown } from '@pancakeswap/hooks'
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
-import CompetitionBanner from '../CompetitionBanner'
 import { GalxeTraverseBanner } from '../GalxeTraverseBanner'
 import GameBanner from '../GameBanner'
 import { NemesisDownfallBanner } from '../NemesisDownfallBanner'
-import NewIFOBanner from '../NewIFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import { TopTraderBanner } from '../TopTraderBanner'
-import UserBanner from '../UserBanner'
 import { V4InfoBanner } from '../V4InfoBanner'
 import VeCakeBanner from '../VeCakeBanner'
 import WebNotificationBanner from '../WebNotificationBanner'
-import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
-import useIsRenderIfoBanner from './useIsRenderIFOBanner'
-import useIsRenderUserBanner from './useIsRenderUserBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -35,17 +28,8 @@ interface IBannerConfig {
  */
 
 export const useMultipleBannerConfig = () => {
-  const isRenderIFOBanner = useIsRenderIfoBanner()
-  const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
-  const isRenderUserBanner = useIsRenderUserBanner()
-  const countdown = useCountdown(1704369600)
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      {
-        shouldRender: isRenderUserBanner.shouldRender && !isRenderUserBanner.isEarningsBusdZero,
-        banner: <UserBanner />,
-      },
-      { shouldRender: isRenderIFOBanner || Boolean(countdown), banner: <NewIFOBanner /> },
       {
         shouldRender: true,
         banner: <V4InfoBanner />,
@@ -66,30 +50,12 @@ export const useMultipleBannerConfig = () => {
       { shouldRender: true, banner: <VeCakeBanner /> },
       { shouldRender: true, banner: <GameBanner /> },
       {
-        shouldRender: isRenderCompetitionBanner,
-        banner: <CompetitionBanner />,
-      },
-      {
         shouldRender: true,
         banner: <PerpetualBanner />,
       },
     ]
-    return [
-      ...NO_SHUFFLE_BANNERS,
-      ...shuffle(SHUFFLE_BANNERS),
-      {
-        // be the last one if harvest value is zero
-        shouldRender: isRenderUserBanner.shouldRender && isRenderUserBanner.isEarningsBusdZero,
-        banner: <UserBanner />,
-      },
-    ]
+    return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
-  }, [
-    countdown,
-    isRenderCompetitionBanner,
-    isRenderIFOBanner,
-    isRenderUserBanner.isEarningsBusdZero,
-    isRenderUserBanner.shouldRender,
-  ])
+  }, [])
 }

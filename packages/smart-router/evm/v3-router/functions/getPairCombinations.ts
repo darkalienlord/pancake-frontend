@@ -1,7 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
-import { GAUGES_CONFIG, GaugeConfig, GaugeType } from '@pancakeswap/gauges'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { getTokensByChain } from '@pancakeswap/tokens'
 import flatMap from 'lodash/flatMap.js'
 import memoize from 'lodash/memoize.js'
 import uniqBy from 'lodash/uniqBy.js'
@@ -11,29 +9,7 @@ import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '.
 import { wrappedCurrency } from '../../utils/currency'
 import { isCurrenciesSameChain, log } from '../utils'
 
-const allGauges = GAUGES_CONFIG[ChainId.BSC]
-
-const getToken = memoize(
-  (chainId?: ChainId, address?: Address): Token | undefined => {
-    if (!chainId || !address) {
-      return undefined
-    }
-    const tokens = getTokensByChain(chainId)
-    for (const token of tokens) {
-      if (token.address.toLowerCase() === address.toLowerCase()) {
-        return token
-      }
-    }
-    return undefined
-  },
-  (chainId, address) => `${chainId}_${address}`,
-)
-
 // TODO: move to gauges
-const getGaugesByChain = memoize(
-  (chainId?: ChainId): GaugeConfig[] => allGauges.filter((gauge) => gauge.chainId === chainId),
-  (chainId) => chainId,
-)
 
 function isTokenInCommonBases(token?: Token) {
   return Boolean(token && BASES_TO_CHECK_TRADES_AGAINST[token.chainId as ChainId]?.find((t) => t.equals(token)))
@@ -42,40 +18,10 @@ function isTokenInCommonBases(token?: Token) {
 const getTokenBasesFromGauges = memoize(
   (currency?: Currency): Token[] => {
     const chainId: ChainId | undefined = currency?.chainId
-    const address = currency?.wrapped.address
-    const gauges = getGaugesByChain(currency?.chainId)
     const bases = new Set<Token>()
-    const addTokenToBases = (token?: Token) => token && !isTokenInCommonBases(token) && bases.add(token)
-    const addTokensToBases = (tokens: Token[]) => tokens.forEach(addTokenToBases)
-    const isCurrentToken = (addr: Address) => addr.toLowerCase() === address?.toLowerCase()
 
     if (currency && chainId && isTokenInCommonBases(currency.wrapped)) {
       return []
-    }
-    for (const gauge of gauges) {
-      const { type } = gauge
-      if (type === GaugeType.V2 || type === GaugeType.V3) {
-        const { token0Address, token1Address } = gauge
-        if (isCurrentToken(token0Address)) {
-          addTokenToBases(getToken(chainId, token1Address))
-        }
-        if (isCurrentToken(token1Address)) {
-          addTokenToBases(getToken(chainId, token0Address))
-        }
-        continue
-      }
-      if (type === GaugeType.StableSwap) {
-        const { tokenAddresses } = gauge
-        const index = tokenAddresses.findIndex(isCurrentToken)
-        if (index < 0) {
-          continue
-        }
-        addTokensToBases(
-          [...tokenAddresses.slice(0, index), ...tokenAddresses.slice(index + 1)]
-            .map((addr) => getToken(chainId, addr))
-            .filter((token?: Token): token is Token => Boolean(token)),
-        )
-      }
     }
     const baseList = Array.from(bases)
     log(

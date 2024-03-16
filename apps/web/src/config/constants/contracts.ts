@@ -1,7 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
-import { GAUGES_ADDRESS, GAUGES_CALC_ADDRESS } from '@pancakeswap/gauges'
-import { ICAKE } from '@pancakeswap/ifos'
 import { CAKE_VAULT } from '@pancakeswap/pools'
 import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router'
 import { DEPLOYER_ADDRESSES, NFT_POSITION_MANAGER_ADDRESSES } from '@pancakeswap/v3-sdk'
@@ -137,7 +135,6 @@ export default {
     [ChainId.BSC]: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
     [ChainId.BSC_TESTNET]: '0x6e4B1D7C65E86f1723720a5fE8993f0908108b64',
   },
-  iCake: ICAKE,
   bCakeFarmBooster: {
     [ChainId.BSC]: '0xE4FAa3Ef5A9708C894435B0F39c2B440936A3A52',
     [ChainId.BSC_TESTNET]: '0x',
@@ -196,11 +193,6 @@ export default {
     [ChainId.BSC]: '0xe934d2C5bE5db0295A4de3177762A9E8c74Ae4f4',
     [ChainId.BSC_TESTNET]: '0x',
   },
-  affiliateProgram: {
-    [ChainId.ETHEREUM]: '0x',
-    [ChainId.BSC]: '0x92C73D90F709DFf7e5E7307e8F2EE20e39396b12',
-    [ChainId.BSC_TESTNET]: '0x1B8a475B5E5De05fB3Ac2D9ec3C2809fBF24e51c',
-  },
   tradingRewardTopTrades: {
     [ChainId.ETHEREUM]: '0x',
     [ChainId.BSC]: '0x41920b6A17CB73D1B60f4F41D82c35eD0a46fD71',
@@ -216,10 +208,6 @@ export default {
     [ChainId.BSC]: '0xCD5d1935e9bfa4905f9f007C97aB1f1763dC1607',
     [ChainId.BSC_TESTNET]: '0xd2d1DD41700d9132d3286e0FcD8D6E1D8E5052F5',
   },
-  anniversaryAchievement: {
-    [ChainId.BSC]: '0x0a073aa17275ef839ee77BC6c589D9E661270480',
-    [ChainId.BSC_TESTNET]: '0x',
-  },
   fixedStaking: {
     [ChainId.ETHEREUM]: '0x',
     [ChainId.BSC]: '0xC0E92c9B437734a0c0e0466F76cDf71c5478b0AB',
@@ -229,8 +217,6 @@ export default {
     [ChainId.BSC]: '0x5692DB8177a81A6c6afc8084C2976C9933EC1bAB',
     [ChainId.BSC_TESTNET]: '0x4879fcB447E7F4c7843A6D15dF5526061304dcFb',
   },
-  gaugesVoting: GAUGES_ADDRESS,
-  gaugesVotingCalc: GAUGES_CALC_ADDRESS,
   revenueSharingVeCake: {
     [ChainId.BSC]: '0xCaF4e48a4Cb930060D0c3409F40Ae7b34d2AbE2D',
     [ChainId.BSC_TESTNET]: '0x58fde4bf684B631363640808F452952D8c14084b',

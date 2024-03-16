@@ -9,20 +9,11 @@ import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchang
 import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
-import {
-  BuyCryptoLink,
-  FormHeader,
-  FormMain,
-  MMTradeDetail,
-  PricingAndSlippage,
-  SwapCommitButtonV2,
-  TradeDetails,
-} from './containers'
+import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButtonV2, TradeDetails } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
 import { MMCommitButtonV2 } from './containers/MMCommitButtonV2'
 import { SwapCommitButton } from './containers/SwapCommitButton'
 import { useSwapBestTrade } from './hooks'
-import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
 export function V3SwapForm() {
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
@@ -45,8 +36,6 @@ export function V3SwapForm() {
 
   const tradeLoaded = !isLoading
   const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
-
-  const insufficientFundCurrency = useCheckInsufficientError(trade)
 
   const featureEnabled = useExperimentalFeatureEnabled(EXPERIMENTAL_FEATURES.UniversalRouter)
   const commitButton = useMemo(() => {
@@ -76,8 +65,6 @@ export function V3SwapForm() {
         outputAmount={finalTrade?.outputAmount}
         swapCommitButton={commitButton}
       />
-
-      <BuyCryptoLink currency={insufficientFundCurrency} />
 
       {mm.isMMBetter ? (
         <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />

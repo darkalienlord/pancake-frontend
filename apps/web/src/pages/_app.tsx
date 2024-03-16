@@ -1,7 +1,6 @@
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { SentryErrorBoundary } from 'components/ErrorBoundary'
-import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { PageMeta } from 'components/Layout/Page'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
@@ -16,7 +15,6 @@ import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
-import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
@@ -33,8 +31,6 @@ import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
 import Menu from '../components/Menu'
 import GlobalStyle from '../style/Global'
-
-const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
 // This config is required for number formatting
 BigNumber.config({
@@ -97,7 +93,6 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
         {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
         <ResetCSS />
         <GlobalStyle />
-        <GlobalCheckClaimStatus excludeLocations={[]} />
         <PersistGate loading={null} persistor={persistor}>
           <Updaters />
           <App {...props} />
@@ -165,7 +160,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           <Component {...pageProps} />
         </Layout>
       </ShowMenu>
-      <EasterEgg iterations={2} />
       <ToastListener />
       <FixedSubgraphHealthIndicator />
       <NetworkModal pageSupportedChains={Component.chains} />

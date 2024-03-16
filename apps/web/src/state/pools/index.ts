@@ -1,8 +1,6 @@
 import { ChainId } from '@pancakeswap/chains'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
-import { fetchPublicIfoData, fetchUserIfoCredit } from '@pancakeswap/ifos'
 import {
-  fetchFlexibleSideVaultUser,
   fetchPoolsAllowance,
   fetchPoolsProfileRequirement,
   fetchPoolsStakingLimits,
@@ -32,17 +30,14 @@ import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
 
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
-import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import {
   PoolsState,
-  PublicIfoData,
   SerializedCakeVault,
   SerializedLockedCakeVault,
   SerializedLockedVaultUser,
   SerializedPool,
   SerializedVaultFees,
-  SerializedVaultUser,
 } from 'state/types'
 import { safeGetAddress } from 'utils'
 import { fetchTokenAplPrice, isAlpToken } from 'utils/fetchTokenAplPrice'
@@ -92,25 +87,7 @@ const initialState: PoolsState = {
   data: [],
   userDataLoaded: false,
   cakeVault: initialPoolVaultState as any,
-  ifo: initialIfoState as any,
   cakeFlexibleSideVault: initialPoolVaultState as any,
-}
-
-export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
-  const cakePrice = parseFloat(await getCakePriceFromOracle())
-
-  const stakingTokenPrice = cakePrice
-  const earningTokenPrice = cakePrice
-
-  dispatch(
-    setPoolPublicData({
-      sousId: 0,
-      data: {
-        stakingTokenPrice,
-        earningTokenPrice,
-      },
-    }),
-  )
 }
 
 export const fetchCakePoolUserDataAsync =
@@ -398,32 +375,6 @@ export const fetchCakeVaultUserData = createAsyncThunk<
   return userData
 })
 
-export const fetchIfoPublicDataAsync = createAsyncThunk<PublicIfoData, ChainId>(
-  'ifoVault/fetchIfoPublicDataAsync',
-  async (chainId) => {
-    const publicIfoData = await fetchPublicIfoData(chainId, getViemClients)
-    return publicIfoData
-  },
-)
-
-export const fetchUserIfoCreditDataAsync =
-  ({ account, chainId }: { account: Address; chainId: ChainId }) =>
-  async (dispatch) => {
-    try {
-      const credit = await fetchUserIfoCredit({ account, chainId, provider: getViemClients })
-      dispatch(setIfoUserCreditData(credit))
-    } catch (error) {
-      console.error('[Ifo Credit Action] Error fetching user Ifo credit data', error)
-    }
-  }
-export const fetchCakeFlexibleSideVaultUserData = createAsyncThunk<
-  SerializedVaultUser,
-  { account: Address; chainId: ChainId }
->('cakeFlexibleSideVault/fetchUser', async ({ account, chainId }) => {
-  const userData = await fetchFlexibleSideVaultUser({ chainId, account, provider: getViemClients })
-  return userData
-})
-
 export const PoolsSlice = createSlice({
   name: 'Pools',
   initialState,
@@ -434,7 +385,6 @@ export const PoolsSlice = createSlice({
       state.data = [...poolsConfig]
       state.userDataLoaded = false
       state.cakeVault = initialPoolVaultState as any
-      state.ifo = initialIfoState as any
       state.cakeFlexibleSideVault = initialPoolVaultState as any
     },
     setPoolPublicData: (state, action) => {
@@ -461,11 +411,6 @@ export const PoolsSlice = createSlice({
         const livePoolData = livePoolsSousIdMap[pool.sousId]
         return { ...pool, ...livePoolData }
       })
-    },
-    // IFO
-    setIfoUserCreditData: (state, action) => {
-      const credit = action.payload
-      state.ifo = { ...state.ifo, credit }
     },
   },
   extraReducers: (builder) => {
@@ -523,18 +468,6 @@ export const PoolsSlice = createSlice({
       const userData = action.payload
       state.cakeVault = { ...state.cakeVault, userData }
     })
-    // IFO
-    builder.addCase(fetchIfoPublicDataAsync.fulfilled, (state, action: PayloadAction<PublicIfoData>) => {
-      const { ceiling } = action.payload
-      state.ifo = { ...state.ifo, ceiling }
-    })
-    builder.addCase(
-      fetchCakeFlexibleSideVaultUserData.fulfilled,
-      (state, action: PayloadAction<SerializedVaultUser>) => {
-        const userData = action.payload
-        state.cakeFlexibleSideVault = { ...state.cakeFlexibleSideVault, userData }
-      },
-    )
     builder.addMatcher(
       isAnyOf(
         updateUserAllowance.fulfilled,
@@ -558,7 +491,6 @@ export const PoolsSlice = createSlice({
 })
 
 // Actions
-export const { setPoolsPublicData, setPoolPublicData, setPoolUserData, setIfoUserCreditData, setInitialPoolConfig } =
-  PoolsSlice.actions
+export const { setPoolsPublicData, setPoolPublicData, setPoolUserData, setInitialPoolConfig } = PoolsSlice.actions
 
 export default PoolsSlice.reducer

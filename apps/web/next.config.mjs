@@ -64,7 +64,6 @@ const config = {
     '@pancakeswap/widgets-internal',
     '@pancakeswap/universal-router-sdk',
     '@pancakeswap/permit2-sdk',
-    '@pancakeswap/ifos',
   ],
   reactStrictMode: true,
   swcMinify: true,
