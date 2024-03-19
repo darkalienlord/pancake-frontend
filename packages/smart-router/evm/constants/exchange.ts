@@ -11,6 +11,8 @@ import {
   baseSepoliaTokens,
   baseTestnetTokens,
   baseTokens,
+  blastSepoliaTokens,
+  blastTokens,
   bscTestnetTokens,
   bscTokens,
   ethereumTokens,
@@ -49,6 +51,8 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.ARBITRUM_SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.BASE_SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
+  [ChainId.BLAST]: '0xC4E2C7E9BaA4C5147d307a32cB322191dE685051',
+  [ChainId.BLAST_SEPOLIA]: '0x798D8Af0D53458c4517F8376ed0638c1B9509698',
 } as const satisfies Record<ChainId, string>
 
 export const V2_ROUTER_ADDRESS: ChainMap<string> = {
@@ -72,6 +76,8 @@ export const V2_ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.SEPOLIA]: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb',
   [ChainId.ARBITRUM_SEPOLIA]: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb',
   [ChainId.BASE_SEPOLIA]: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb',
+  [ChainId.BLAST]: '0xf46B23F843D72B9496D3CC834C800Dd5f6a293A6',
+  [ChainId.BLAST_SEPOLIA]: '0x0CfF693E88476A7C4271e73fC00c17491ab7575c',
 }
 
 export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
@@ -95,6 +101,8 @@ export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
   [ChainId.SEPOLIA]: '',
   [ChainId.ARBITRUM_SEPOLIA]: '',
   [ChainId.BASE_SEPOLIA]: '',
+  [ChainId.BLAST]: '',
+  [ChainId.BLAST_SEPOLIA]: '',
 }
 
 // used to construct intermediary pairs for trading
@@ -127,6 +135,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.SEPOLIA]: [sepoliaTokens.usdc, sepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
+  [ChainId.BLAST]: [blastTokens.usdb, blastTokens.weth],
+  [ChainId.BLAST_SEPOLIA]: [blastSepoliaTokens.usdb, blastSepoliaTokens.weth],
 }
 
 const czusd = new ERC20Token(ChainId.BSC, '0xE68b79e51bf826534Ff37AA9CeE71a3842ee9c70', 18, 'CZUSD', 'CZUSD')

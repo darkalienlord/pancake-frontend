@@ -1,27 +1,21 @@
-import { useContext } from 'react'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { FarmsV3PageLayout, FarmsV3Context } from 'views/Farms'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useContext } from 'react'
+import { FarmsV3Context, FarmsV3PageLayout } from 'views/Farms'
+import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useAccount } from 'wagmi'
-import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
-import ProxyFarmContainer, {
-  YieldBoosterStateContext,
-} from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 
 export const ProxyFarmCardContainer = ({ farm }) => {
   const { address: account } = useAccount()
   const cakePrice = useCakePrice()
 
-  const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
-  const finalFarm = shouldUseProxyFarm ? proxyFarm : farm
-
   return (
     <FarmCard
-      key={finalFarm.pid}
-      farm={finalFarm}
-      displayApr={getDisplayApr(finalFarm.apr, finalFarm.lpRewardsApr)}
+      key={farm.pid}
+      farm={farm}
+      displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
       cakePrice={cakePrice}
       account={account}
       removed={false}
@@ -38,11 +32,7 @@ const FarmsPage = () => {
     <>
       {chosenFarmsMemoized?.map((farm) => {
         if (farm.version === 2) {
-          return farm.boosted ? (
-            <ProxyFarmContainer farm={farm} key={`${farm.pid}-${farm.version}`}>
-              <ProxyFarmCardContainer farm={farm} />
-            </ProxyFarmContainer>
-          ) : (
+          return (
             <FarmCard
               key={`${farm.pid}-${farm.version}`}
               farm={farm}

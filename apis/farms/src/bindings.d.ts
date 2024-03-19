@@ -16,4 +16,6 @@ declare global {
   const OPBNB_NODE: string
   const OPBNB_TESTNET_NODE: string
   const NODE_REAL_SUBGRAPH_API_KEY: string
+  const BLAST_NODE: string
+  const BLAST_SEPOLIA_NODE: string
 }

@@ -2,6 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { Chain, createPublicClient, http, PublicClient } from 'viem'
 import {
   arbitrum,
+  base,
   bsc,
   bscTestnet,
   goerli,
@@ -26,43 +27,68 @@ const requireCheck = [
   OPBNB_NODE,
   OPBNB_TESTNET_NODE,
   NODE_REAL_SUBGRAPH_API_KEY,
+  BLAST_NODE,
+  BLAST_SEPOLIA_NODE,
 ]
 
-const base = {
-  id: 8453,
-  network: 'base',
-  name: 'Base',
+const blast = {
+  id: 81457,
+  network: 'blast',
+  name: 'Blast',
   nativeCurrency: {
-    name: 'Base',
+    name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
   },
   rpcUrls: {
     default: {
-      http: ['https://mainnet.base.org'],
+      http: ['https://rpc.blast.org'],
     },
     public: {
-      http: ['https://mainnet.base.org'],
+      http: ['https://rpc.blast.org'],
     },
   },
   blockExplorers: {
-    blockscout: {
-      name: 'Basescout',
-      url: 'https://base.blockscout.com',
-    },
     default: {
-      name: 'Basescan',
-      url: 'https://basescan.org',
-    },
-    etherscan: {
-      name: 'Basescan',
-      url: 'https://basescan.org',
+      name: 'Blastscan',
+      url: 'https://blastscan.io',
     },
   },
   contracts: {
     multicall3: {
       address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 5022,
+      blockCreated: 212929,
+    },
+  },
+} as const
+
+const blastSepolia = {
+  id: 168_587_773,
+  network: 'blastSepolia',
+  name: 'Blast Sepolia',
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://sepolia.blast.io'],
+    },
+    public: {
+      http: ['https://sepolia.blast.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Blastscan',
+      url: 'https://testnet.blastscan.io',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 756690,
     },
   },
 } as const
@@ -265,6 +291,30 @@ const opBNBTestnetClient = createPublicClient({
   },
 })
 
+const blastClient = createPublicClient({
+  chain: blast,
+  transport: http(BLAST_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
+})
+
+const blastSepoliaClient = createPublicClient({
+  chain: blastSepolia,
+  transport: http(BLAST_SEPOLIA_NODE),
+  batch: {
+    multicall: {
+      batchSize: 1024 * 200,
+      wait: 16,
+    },
+  },
+  pollingInterval: 6_000,
+})
+
 export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient => {
   switch (chainId) {
     case ChainId.ETHEREUM:
@@ -291,6 +341,10 @@ export const viemProviders = ({ chainId }: { chainId?: ChainId }): PublicClient 
       return opBNBClient
     case ChainId.OPBNB_TESTNET:
       return opBNBTestnetClient
+    case ChainId.BLAST:
+      return blastClient
+    case ChainId.BLAST_SEPOLIA:
+      return blastSepoliaClient
     default:
       return bscClient
   }

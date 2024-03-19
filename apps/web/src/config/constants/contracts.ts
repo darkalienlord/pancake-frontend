@@ -8,6 +8,10 @@ export default {
   masterChef: {
     [ChainId.BSC_TESTNET]: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     [ChainId.BSC]: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
+    [ChainId.BLAST]: '0x277aEf424d1F5cf3E85FA4B7835367a9cd32048e',
+    [ChainId.BLAST_SEPOLIA]: '0x277aEf424d1F5cf3E85FA4B7835367a9cd32048e',
+    [ChainId.BASE]: '0x52eaeCAC2402633d98b95213d0b473E069D86590',
+    [ChainId.BASE_SEPOLIA]: '0x1dd2d631c92b1aCdFCDd51A0F7145A50130050C4',
   },
   masterChefV3: masterChefV3Addresses,
   masterChefV1: {

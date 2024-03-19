@@ -37,6 +37,13 @@ const config: (
 ) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) =>
   [
     {
+      label: t('Explore'),
+      icon: MoreIcon,
+      fillIcon: MoreIcon,
+      href: '/info',
+      showItemsOnMobile: true,
+    },
+    {
       label: t('Trade'),
       icon: SwapIcon,
       fillIcon: SwapFillIcon,

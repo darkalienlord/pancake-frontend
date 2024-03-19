@@ -1,7 +1,16 @@
 import { ChainId } from '@pancakeswap/chains'
 import uniq from 'lodash/uniq'
 
-export const supportedChainIdV2 = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM] as const
+export const supportedChainIdV2 = [
+  ChainId.GOERLI,
+  ChainId.BSC,
+  ChainId.BSC_TESTNET,
+  ChainId.ETHEREUM,
+  ChainId.BLAST,
+  ChainId.BLAST_SEPOLIA,
+  ChainId.BASE,
+  ChainId.BASE_SEPOLIA,
+] as const
 export const supportedChainIdV3 = [
   ChainId.GOERLI,
   ChainId.BSC,
@@ -31,7 +40,13 @@ export type FarmV3SupportedChainId = (typeof supportedChainIdV3)[number]
 export const masterChefAddresses = {
   [ChainId.BSC_TESTNET]: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
   [ChainId.BSC]: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
-} as const
+  [ChainId.ETHEREUM]: '',
+  [ChainId.GOERLI]: '',
+  [ChainId.BLAST]: '0x277aEf424d1F5cf3E85FA4B7835367a9cd32048e',
+  [ChainId.BLAST_SEPOLIA]: '0x277aEf424d1F5cf3E85FA4B7835367a9cd32048e',
+  [ChainId.BASE]: '0x52eaeCAC2402633d98b95213d0b473E069D86590',
+  [ChainId.BASE_SEPOLIA]: '0x1dd2d631c92b1aCdFCDd51A0F7145A50130050C4',
+} as const satisfies Record<FarmV2SupportedChainId, string>
 
 export const masterChefV3Addresses = {
   [ChainId.ETHEREUM]: '0x556B9306565093C855AEA9AE92A594704c2Cd59e',

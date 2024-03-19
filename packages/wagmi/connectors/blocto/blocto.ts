@@ -1,6 +1,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable consistent-return */
 /* eslint-disable class-methods-use-this */
+import type { EthereumProviderInterface } from '@blocto/sdk'
 import {
   ProviderRpcError,
   ResourceNotFoundRpcError,
@@ -9,8 +10,7 @@ import {
   custom,
   getAddress,
 } from 'viem'
-import { Connector, Chain, WalletClient, ConnectorNotFoundError, ChainNotConfiguredError } from 'wagmi'
-import type { EthereumProviderInterface } from '@blocto/sdk'
+import { Chain, ChainNotConfiguredError, Connector, ConnectorNotFoundError, WalletClient } from 'wagmi'
 import { normalizeChainId } from '../utils'
 
 const chainIdToNetwork: { [network: number]: string } = {
@@ -26,6 +26,8 @@ const chainIdToNetwork: { [network: number]: string } = {
   43113: 'fuji', // Avalanche Testnet
   42161: 'arbitrum', // Arbitrum Mainnet
   421613: 'arbitrumGoerli', // Arbitrum Testnet
+  168587773: 'blastSepolia', // Blast Sepolia
+  81457: 'blast', // Blast
 }
 
 export class BloctoConnector extends Connector<EthereumProviderInterface, { defaultChainId: number; appId?: string }> {

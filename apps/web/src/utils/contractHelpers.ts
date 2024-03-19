@@ -2,6 +2,10 @@ import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
 import {
+  getBCakeFarmBoosterAddress,
+  getBCakeFarmBoosterProxyFactoryAddress,
+  getBCakeFarmBoosterV3Address,
+  getBCakeFarmBoosterVeCakeAddress,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
   getCrossFarmingReceiverAddress,
@@ -56,6 +60,13 @@ import { viemClients } from 'utils/viem'
 import { Abi, PublicClient, WalletClient, getContract as viemGetContract } from 'viem'
 import { Address, erc20ABI, erc721ABI } from 'wagmi'
 
+import { bCakeFarmBoosterABI } from 'config/abi/bCakeFarmBooster'
+import { bCakeFarmBoosterProxyFactoryABI } from 'config/abi/bCakeFarmBoosterProxyFactory'
+import { bCakeProxyABI } from 'config/abi/bCakeProxy'
+
+import { bCakeFarmBoosterV3ABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterV3'
+import { bCakeFarmBoosterVeCakeABI } from '@pancakeswap/farms/constants/v3/abi/bCakeFarmBoosterVeCake'
+
 export const getContract = <TAbi extends Abi | unknown[], TWalletClient extends WalletClient>({
   abi,
   address,
@@ -99,6 +110,35 @@ export const getErc721Contract = (address: Address, walletClient?: WalletClient)
 }
 export const getLpContract = (address: Address, chainId?: number, signer?: WalletClient) => {
   return getContract({ abi: lpTokenABI, address, signer, chainId })
+}
+
+export const getBCakeFarmBoosterContract = (signer?: WalletClient) => {
+  return getContract({ abi: bCakeFarmBoosterABI, address: getBCakeFarmBoosterAddress(), signer })
+}
+
+export const getBCakeFarmBoosterV3Contract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({ abi: bCakeFarmBoosterV3ABI, address: getBCakeFarmBoosterV3Address(chainId), signer, chainId })
+}
+
+export const getBCakeFarmBoosterVeCakeContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: bCakeFarmBoosterVeCakeABI,
+    address: getBCakeFarmBoosterVeCakeAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getBCakeFarmBoosterProxyFactoryContract = (signer?: WalletClient) => {
+  return getContract({
+    abi: bCakeFarmBoosterProxyFactoryABI,
+    address: getBCakeFarmBoosterProxyFactoryAddress(),
+    signer,
+  })
+}
+
+export const getBCakeProxyContract = (proxyContractAddress: Address, signer?: WalletClient) => {
+  return getContract({ abi: bCakeProxyABI, address: proxyContractAddress, signer })
 }
 
 export const getPointCenterIfoContract = (signer?: WalletClient) => {

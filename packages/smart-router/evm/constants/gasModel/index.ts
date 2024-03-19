@@ -7,6 +7,8 @@ import {
   baseSepoliaTokens,
   baseTestnetTokens,
   baseTokens,
+  blastSepoliaTokens,
+  blastTokens,
   bscTestnetTokens,
   bscTokens,
   ethereumTokens,
@@ -43,6 +45,8 @@ export const usdGasTokensByChain = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc],
+  [ChainId.BLAST]: [blastTokens.usdb],
+  [ChainId.BLAST_SEPOLIA]: [blastSepoliaTokens.usdb],
 } satisfies Record<ChainId, Token[]>
 
 export * from './stableSwap'

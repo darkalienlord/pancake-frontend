@@ -53,6 +53,65 @@ const bsc = {
   },
 } satisfies Chain
 
+const blast = {
+  id: 81457,
+  network: 'blast',
+  name: 'Blast',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: {
+    public: {
+      http: ['https://rpc.blast.io'],
+    },
+    default: {
+      http: ['https://rpc.blast.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'https://blastscan.io',
+      url: 'https://blastscan.io',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 212929,
+    },
+  },
+} satisfies Chain
+
+const blastSepolia = {
+  id: 168_587_773,
+  network: 'blastSepolia',
+  name: 'Blast Sepolia',
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://sepolia.blast.io'],
+    },
+    public: {
+      http: ['https://sepolia.blast.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Blastscan',
+      url: 'https://testnet.blastscan.io',
+    },
+  },
+  contracts: {
+    multicall3: {
+      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      blockCreated: 756690,
+    },
+  },
+  testnet: true,
+} satisfies Chain
+
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.
  * The expectation is that all of these networks have immediate transaction confirmation.
@@ -91,8 +150,8 @@ export const CHAINS = [
   arbitrumSepolia,
   linea,
   lineaTestnet,
-  // blast,
-  // blastSepolia,
+  blast,
+  blastSepolia,
   base,
   baseGoerli,
   baseSepolia,
