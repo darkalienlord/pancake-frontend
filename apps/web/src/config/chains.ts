@@ -8,6 +8,8 @@ import {
   base,
   baseGoerli,
   baseSepolia,
+  blast,
+  blastSepolia,
   bscTestnet,
   bsc as bsc_,
   goerli,
@@ -26,65 +28,6 @@ import {
 
 export const CHAIN_QUERY_NAME = chainNames
 
-const blast = {
-  id: 81457,
-  network: 'blast',
-  name: 'Blast',
-  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  rpcUrls: {
-    public: {
-      http: ['https://rpc.blast.io'],
-    },
-    default: {
-      http: ['https://rpc.blast.io'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'https://blastscan.io',
-      url: 'https://blastscan.io',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 212929,
-    },
-  },
-} satisfies Chain
-
-const blastSepolia = {
-  id: 168587773,
-  network: 'blastSepolia',
-  name: 'Blast Sepolia',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  rpcUrls: {
-    public: {
-      http: ['https://sepolia.blast.io'],
-    },
-    default: {
-      http: ['https://sepolia.blast.io'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Blastscan',
-      url: 'https://testnet.blastscan.io',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 756690,
-    },
-  },
-  testnet: true,
-} satisfies Chain
-
 const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
   return {
     [chainName.toLowerCase()]: chainId as unknown as ChainId,
@@ -101,10 +44,6 @@ const bsc = {
   ...bsc_,
   rpcUrls: {
     ...bsc_.rpcUrls,
-    public: {
-      ...bsc_.rpcUrls.public,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
     default: {
       ...bsc_.rpcUrls.default,
       http: ['https://bsc-dataseed.binance.org/'],

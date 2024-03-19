@@ -4,5 +4,8 @@
   "private": true,
   "scripts": {
     "test": "vitest --run"
+  },
+  "dependencies": {
+    "viem": "~2.8.12"
   }
 }

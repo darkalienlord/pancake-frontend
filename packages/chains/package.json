@@ -38,5 +38,8 @@
   },
   "devDependencies": {
     "tsup": "^6.7.0"
+  },
+  "dependencies": {
+    "viem": "~2.8.12"
   }
 }

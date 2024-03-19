@@ -1,8 +1,10 @@
 import { ChainId } from '@pancakeswap/chains'
-import { Chain, createPublicClient, http, PublicClient } from 'viem'
+import { Chain, PublicClient, createPublicClient, http } from 'viem'
 import {
   arbitrum,
   base,
+  blast,
+  blastSepolia,
   bsc,
   bscTestnet,
   goerli,
@@ -30,68 +32,6 @@ const requireCheck = [
   BLAST_NODE,
   BLAST_SEPOLIA_NODE,
 ]
-
-const blast = {
-  id: 81457,
-  network: 'blast',
-  name: 'Blast',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://rpc.blast.org'],
-    },
-    public: {
-      http: ['https://rpc.blast.org'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Blastscan',
-      url: 'https://blastscan.io',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 212929,
-    },
-  },
-} as const
-
-const blastSepolia = {
-  id: 168587773,
-  network: 'blastSepolia',
-  name: 'Blast Sepolia',
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://sepolia.blast.io'],
-    },
-    public: {
-      http: ['https://sepolia.blast.io'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Blastscan',
-      url: 'https://testnet.blastscan.io',
-    },
-  },
-  contracts: {
-    multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-      blockCreated: 756690,
-    },
-  },
-} as const
 
 const linea = {
   id: 59_144,

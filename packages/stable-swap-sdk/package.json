@@ -26,7 +26,8 @@
     "@pancakeswap/chains": "workspace:*",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/tokens": "workspace:*",
-    "tiny-invariant": "^1.3.0"
+    "tiny-invariant": "^1.3.0",
+    "viem": "~2.8.12"
   },
   "devDependencies": {
     "@pancakeswap/token-lists": "workspace:*",

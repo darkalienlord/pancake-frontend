@@ -37,9 +37,9 @@
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.3.0",
     "tiny-warning": "^1.0.3",
-    "toformat": "^2.0.0"
+    "toformat": "^2.0.0",
+    "viem": "~2.8.12"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@types/big.js": "^4.0.5",
     "tsup": "^6.7.0"

@@ -19,5 +19,8 @@
       "import": "./dist/withWebSecurityHeaders.js",
       "require": "./dist/withWebSecurityHeaders.js"
     }
+  },
+  "dependencies": {
+    "viem": "~2.8.12"
   }
 }

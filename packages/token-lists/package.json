@@ -13,7 +13,8 @@
   "dependencies": {
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "ajv": "^6.12.3",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "viem": "~2.8.12"
   },
   "peerDependencies": {
     "@reduxjs/toolkit": "^1.9.1",

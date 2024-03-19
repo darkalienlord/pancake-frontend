@@ -8,19 +8,20 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "dayjs": "^1.11.10",
-    "js-cookie": "^3.0.1",
-    "react": "^18.2.0",
     "@pancakeswap/swap-sdk-core": "workspace:*",
     "@pancakeswap/utils": "workspace:*",
-    "next-themes": "^0.2.1"
+    "dayjs": "^1.11.10",
+    "js-cookie": "^3.0.1",
+    "next-themes": "^0.2.1",
+    "react": "^18.2.0",
+    "viem": "~2.8.12"
   },
   "peerDependencies": {
     "styled-components": "6.0.7"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",
-    "styled-components": "6.0.7",
-    "@types/react": "^18.2.21"
+    "@types/react": "^18.2.21",
+    "styled-components": "6.0.7"
   }
 }
