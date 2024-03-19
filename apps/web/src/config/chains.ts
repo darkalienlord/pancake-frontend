@@ -26,33 +26,6 @@ import {
 
 export const CHAIN_QUERY_NAME = chainNames
 
-const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
-  return {
-    [chainName.toLowerCase()]: chainId as unknown as ChainId,
-    ...acc,
-  }
-}, {} as Record<string, ChainId>)
-
-export const getChainId = memoize((chainName: string) => {
-  if (!chainName) return undefined
-  return CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] ? +CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] : undefined
-})
-
-const bsc = {
-  ...bsc_,
-  rpcUrls: {
-    ...bsc_.rpcUrls,
-    public: {
-      ...bsc_.rpcUrls.public,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
-    default: {
-      ...bsc_.rpcUrls.default,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
-  },
-} satisfies Chain
-
 const blast = {
   id: 81457,
   network: 'blast',
@@ -81,7 +54,7 @@ const blast = {
 } satisfies Chain
 
 const blastSepolia = {
-  id: 168_587_773,
+  id: 168587773,
   network: 'blastSepolia',
   name: 'Blast Sepolia',
   nativeCurrency: {
@@ -90,10 +63,10 @@ const blastSepolia = {
     decimals: 18,
   },
   rpcUrls: {
-    default: {
+    public: {
       http: ['https://sepolia.blast.io'],
     },
-    public: {
+    default: {
       http: ['https://sepolia.blast.io'],
     },
   },
@@ -110,6 +83,33 @@ const blastSepolia = {
     },
   },
   testnet: true,
+} satisfies Chain
+
+const CHAIN_QUERY_NAME_TO_ID = Object.entries(CHAIN_QUERY_NAME).reduce((acc, [chainId, chainName]) => {
+  return {
+    [chainName.toLowerCase()]: chainId as unknown as ChainId,
+    ...acc,
+  }
+}, {} as Record<string, ChainId>)
+
+export const getChainId = memoize((chainName: string) => {
+  if (!chainName) return undefined
+  return CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] ? +CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] : undefined
+})
+
+const bsc = {
+  ...bsc_,
+  rpcUrls: {
+    ...bsc_.rpcUrls,
+    public: {
+      ...bsc_.rpcUrls.public,
+      http: ['https://bsc-dataseed.binance.org/'],
+    },
+    default: {
+      ...bsc_.rpcUrls.default,
+      http: ['https://bsc-dataseed.binance.org/'],
+    },
+  },
 } satisfies Chain
 
 /**

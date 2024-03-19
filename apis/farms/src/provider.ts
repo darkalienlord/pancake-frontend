@@ -63,7 +63,7 @@ const blast = {
 } as const
 
 const blastSepolia = {
-  id: 168_587_773,
+  id: 168587773,
   network: 'blastSepolia',
   name: 'Blast Sepolia',
   nativeCurrency: {
